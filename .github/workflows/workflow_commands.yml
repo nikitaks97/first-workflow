@@ -8,4 +8,6 @@ jobs:
         run: echo "::error file=app.js,line=1::Missing semicolon"
       - name: setting a debug message
         run: echo "::debug::Set the Octocat variable"
+      - name: echo environment variable
+        run: echo " $GITHUB_SHA "
 
