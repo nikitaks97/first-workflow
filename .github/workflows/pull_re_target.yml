@@ -1,4 +1,4 @@
-name: pull_request_target
+name: pull_request_target add comment on pr automatically
 on:
  pull_request_target:
   types: [ opened]
