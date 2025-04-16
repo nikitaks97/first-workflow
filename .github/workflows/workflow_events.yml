@@ -1,4 +1,4 @@
-name: Repository events and activity types
+name: Repository events and activity types:
 on:
  push:
  pull_request:
