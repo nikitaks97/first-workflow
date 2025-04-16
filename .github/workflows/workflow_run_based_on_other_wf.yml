@@ -1,4 +1,10 @@
 name: Workflow run based in other workflow 
 on: 
  workflow_run:
-  workflows: [
+  workflows: [ execute workflow commands]
+  types: [completed]
+jobs:
+  echo-string: 
+   runs-on: ubuntu-latest
+   steps:
+     - run: echo "I was triggered because execute workflow commands succeeded"
