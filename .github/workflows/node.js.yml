@@ -27,7 +27,7 @@ jobs:
      - name: Install npm
        run: npm install
        working-directory: 02 Starting Project
-     - name: Install dependencies
+     - name: Install dependencies nodejs
        run: npm ci
      - name: Run test
        run: npm test
