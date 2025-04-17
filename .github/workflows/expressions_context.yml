@@ -1,44 +1,41 @@
-# Name of the workflow as it will appear in the GitHub Actions UI
+# Name of the workflow as shown in GitHub Actions UI
 name: Expressions & Contexts
 
-# Defines events that will trigger this workflow
-on: [push, pull_request, issues, workflow_dispatch] 
-# - push: Triggered when code is pushed
-# - pull_request: Triggered on PR events
-# - issues: Triggered on issue events (opened, edited, etc.)
-# - workflow_dispatch: Allows manual triggering via UI or API
+# Triggers for the workflow
+on: 
+  push:                # Trigger when a push happens
+  pull_request:        # Trigger on PR events
+  issues:              # Trigger on issue events (opened, edited, etc.)
+  workflow_dispatch:   # Allows manual triggering
 
-# Dynamic name for the run, using the actor and the event name
+# Dynamic name for each run
 run-name: "Expressions & Contexts by @${{ github.actor }}, event: ${{ github.event_name }}"
 
 jobs:
   using-expressions-and-contexts:
-    runs-on: ubuntu-latest  # Job will run on the latest Ubuntu runner
-
-    # Run this job only when the event is a push
-    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest  # Use GitHub's Ubuntu runner
+    if: ${{ github.event_name=='push'
 
     steps:
       - name: Expressions
         id: expressions
         run: |
-          # These are GitHub Expressions using the ${{ }} syntax
+          # All of these use GitHub expressions passed to shell via echo
 
-          echo "${{ 1 }}"                           # Prints: 1 (a number literal)
-          echo "${{ 'This is a string' }}"           # Prints: This is a string (a string literal)
-          echo "${{ null }}"                         # Prints: (empty/null)
-          echo "${{ true }}"                         # Prints: true (a boolean literal)
-          echo "${{ 1 > 2 }}"                      # Prints: false (expression comparison)
-          echo "${{ 'string' == 'String' }}"        # Prints: false (case-sensitive string comparison)
-          echo "${{ true && false }}"                # Prints: false (logical AND)
-          echo "${{ true || (false && true) }}"      # Prints: true (logical OR with grouping)
+          echo "${{ 1 }}"                            # Prints: 1 (a number literal)
+          echo "${{ 'This is a string' }}"           # Prints: This is a string
+          echo "${{ null }}"                         # Prints: (blank/null)
+          echo "${{ true }}"                         # Prints: true
+          echo "${{ 1 > 2 }}"                        # Prints: false
+          echo "${{ 'string' == 'String' }}"         # Prints: false
+          echo "${{ true && false }}"                # Prints: false
+          echo "${{ true || (false && true) }}"      # Prints: true
 
       - name: Dump Contexts
         run: |
-          # `toJson` is used to dump context objects as JSON strings for inspection
-
-          echo '${{ toJson(github) }}'   # GitHub context: actor, repo, ref, event, etc.
-          echo '${{ toJson(job) }}'      # Job context: job name, status, etc.
-          echo '${{ toJson(secrets) }}'  # Secrets context: shows which secrets are available (values will be redacted)
-          echo '${{ toJson(steps) }}'    # Steps context: outputs and statuses of previous steps
-          echo '${{ toJson(runner) }}'   # Runner context: details about the GitHub-hosted runner environment
+          # Use toJson to output structured data
+          echo '${{ toJson(github) }}'   # GitHub context
+          echo '${{ toJson(job) }}'      # Job context
+          echo '${{ toJson(secrets) }}'  # Secrets (values redacted)
+          echo '${{ toJson(steps) }}'    # Step outputs
+          echo '${{ toJson(runner) }}'   # Runner environment info
