@@ -1,17 +1,19 @@
 name: Manually Triggered
+
+# 👇 This section defines the trigger type — workflow_dispatch is used to manually run workflows from the GitHub UI.
 on:
   workflow_dispatch:
     inputs:
-      string:
+      string:                     # String input with default
         description: A string input
         type: string
         required: true
         default: "Default value"
-      number:
+      number:                     # Number input with default
         description: A number input
         default: 4
         type: number
-      option:
+      option:                     # Choice input with options
         description: "An Options Input"
         required: true
         default: "Option 3"
@@ -20,26 +22,26 @@ on:
           - Option 1
           - Option 2
           - Option 3
-      boolean:
+      boolean:                    # Boolean input (true/false)
         description: A boolean option
         required: false
         type: boolean
-      environment:
+      environment:                # Environment selection input
         description: "Environment"
         type: environment
         required: true
 
 jobs:
   log-info:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest       # Job will run on latest Ubuntu runner
     steps:
       - run: |
-          
-          
-          echo $GITHUB_REF
-      
-          echo "String ${{ inputs.string }}"
-          echo "Number ${{ inputs.number }}"
-          echo "Option ${{ inputs.option }}"
-          echo "Boolean ${{ inputs.boolean }}"
-          echo "Environment ${{ inputs.environment }}"|
+          # Output the Git reference that triggered the workflow (e.g., branch or tag)
+          echo "Git Ref: $GITHUB_REF"
+
+          # Output each input value
+          echo "String: ${{ inputs.string }}"
+          echo "Number: ${{ inputs.number }}"
+          echo "Option: ${{ inputs.option }}"
+          echo "Boolean: ${{ inputs.boolean }}"
+          echo "Environment: ${{ inputs.environment }}"
