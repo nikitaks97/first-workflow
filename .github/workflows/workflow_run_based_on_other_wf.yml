@@ -18,8 +18,9 @@ jobs:
     # Use the latest version of Ubuntu as the runner environment
     runs-on: ubuntu-latest
 
+    # Only run this job if the previous workflow concluded successfully
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
     steps:
       # Single step to print a message to the logs
-      - run: echo "I was triggered because execute workflow commands succeeded"
-        # ^ This will confirm in the logs that the workflow was triggered as expected
-
+      - run: echo "I was triggered because 'execute workflow commands' workflow succeeded"
