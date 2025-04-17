@@ -1,0 +1,14 @@
+name: Manually triggered
+on:
+ workflow_dispatch:
+  inputs:
+   string:
+    description: A input string
+    type: string
+    required: true
+    default: "default value"
+jobs:
+  log-info:
+    runs-on: ubuntu-latest
+    steps:
+      run: echo $GITHUB_REF
