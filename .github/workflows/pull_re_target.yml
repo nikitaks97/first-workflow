@@ -10,6 +10,7 @@ jobs:
         uses: actions/github-script@v6
         with:
          script: |
+           const pr_number = github.event.pull_request.number;
            github.rest.issues.createComment({
              onwer: context.repo.owner,
              repo: context.repo.repo,
