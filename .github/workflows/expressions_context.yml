@@ -12,6 +12,13 @@ on:
 run-name: "Expressions & Contexts by @${{ github.actor }}, event: ${{ github.event_name }}"
 
 jobs:
+  issues-prs:
+    runs-on: ubuntu:latest
+    if: contains(fromJson('["issues","pull_request"]'),github.event_name)
+    steps:
+     - name: Run only if issue has a label
+       if: contains( github.event.issue.labels.*.name,'bug')
+       run: echo ${{ join(github.event.issue.labels.*.name, ',') }}
   using-expressions-and-contexts:
     runs-on: ubuntu-latest  # Use GitHub's Ubuntu runner
     if: ${{ github.event_name=='push' }}
