@@ -1,0 +1,17 @@
+# The name of the workflow — appears in the Actions tab in GitHub
+name: External events (repository dispatch)
+
+# Define the event that triggers this workflow
+on:
+  repository_dispatch:            # This allows the workflow to be triggered externally via the GitHub API
+    types: [build]                # Only trigger when the event_type is "build" (from the external API call)
+
+# Define the list of jobs that will run when the event is triggered
+jobs:
+  echo-a-string:                  # Name of the job (arbitrary)
+    runs-on: ubuntu-latest        # Specify the environment (GitHub-hosted Ubuntu runner)
+
+    steps:                        # Steps define the individual commands to run in this job
+      - run: echo "repo dispatch" # Simple step to print a string to the logs
+
+  
