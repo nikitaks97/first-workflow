@@ -24,14 +24,14 @@ jobs:
         run: |
           # These are GitHub Expressions using the ${{ }} syntax
 
-          echo ${{ 1 }}                            # Prints: 1 (a number literal)
-          echo ${{ 'This is a string' }}           # Prints: This is a string (a string literal)
-          echo ${{ null }}                         # Prints: (empty/null)
-          echo ${{ true }}                         # Prints: true (a boolean literal)
-          echo ${{ 1 > 2 }}                        # Prints: false (expression comparison)
-          echo ${{ 'string' == 'String' }}         # Prints: false (case-sensitive string comparison)
-          echo ${{ true && false }}                # Prints: false (logical AND)
-          echo ${{ true || (false && true) }}      # Prints: true (logical OR with grouping)
+          echo "${{ 1 }}"                           # Prints: 1 (a number literal)
+          echo "${{ 'This is a string' }}"           # Prints: This is a string (a string literal)
+          echo "${{ null }}"                         # Prints: (empty/null)
+          echo "${{ true }}"                         # Prints: true (a boolean literal)
+          echo "${{ 1 > 2 }}"                      # Prints: false (expression comparison)
+          echo "${{ 'string' == 'String' }}"        # Prints: false (case-sensitive string comparison)
+          echo "${{ true && false }}"                # Prints: false (logical AND)
+          echo "${{ true || (false && true) }}"      # Prints: true (logical OR with grouping)
 
       - name: Dump Contexts
         run: |
