@@ -14,7 +14,10 @@ run-name: "Expressions & Contexts by @${{ github.actor }}, event: ${{ github.eve
 jobs:
   using-expressions-and-contexts:
     runs-on: ubuntu-latest  # Job will run on the latest Ubuntu runner
-    if: github.event_name='push'
+
+    # Run this job only when the event is a push
+    if: ${{ github.event_name == 'push' }}
+
     steps:
       - name: Expressions
         id: expressions
