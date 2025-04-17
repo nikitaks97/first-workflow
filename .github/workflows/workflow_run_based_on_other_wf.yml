@@ -1,10 +1,25 @@
-name: Workflow run based in other workflow 
-on: 
- workflow_run:
-  workflows: [ execute workflow commands]
-  types: [completed]
+# Name of the workflow
+name: Workflow run based on another workflow
+
+# Trigger this workflow when another workflow completes
+on:
+  workflow_run:
+    # This workflow will be triggered after the completion of the workflow named 'execute workflow commands'
+    workflows: [execute workflow commands]
+    # Only trigger when the target workflow has completed
+    types: [completed]
+    # Limit this trigger to runs on the 'main' branch
+    branches:
+      - main
+
 jobs:
-  echo-string: 
-   runs-on: ubuntu-latest
-   steps:
-     - run: echo "I was triggered because execute workflow commands succeeded"
+  # Define a job named 'echo-string'
+  echo-string:
+    # Use the latest version of Ubuntu as the runner environment
+    runs-on: ubuntu-latest
+
+    steps:
+      # Single step to print a message to the logs
+      - run: echo "I was triggered because execute workflow commands succeeded"
+        # ^ This will confirm in the logs that the workflow was triggered as expected
+
