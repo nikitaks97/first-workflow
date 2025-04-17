@@ -11,7 +11,7 @@ on:
         default: "Default value"
       number:                     # Number input with default
         description: A number input
-        default: 4
+        default: 'one'
         type: number
       option:                     # Choice input with options
         description: "An Options Input"
