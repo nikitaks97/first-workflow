@@ -1,58 +1,46 @@
-# Name of the workflow as shown in the GitHub Actions UI
+# Name of the workflow as shown in GitHub Actions UI
 name: Expressions & Contexts
 
-# Defines the events that will trigger the workflow
+# Triggers for the workflow
 on: 
-  push:                # Trigger the workflow when someone pushes code to the repository
-  pull_request:        # Trigger when a pull request is opened, synchronized, etc.
-  issues:              # Trigger when an issue is created, edited, labeled, etc.
-  workflow_dispatch:   # Enables manual triggering of the workflow from the GitHub Actions UI or API
+  push:                # Trigger when a push happens
+  pull_request:        # Trigger on PR events
+  issues:              # Trigger on issue events (opened, edited, etc.)
+  workflow_dispatch:   # Allows manual triggering
 
-# Custom name for the workflow run. Shows who triggered it and by which event.
+# Dynamic name for each run
 run-name: "Expressions & Contexts by @${{ github.actor }}, event: ${{ github.event_name }}"
 
 jobs:
   issues-prs:
-    runs-on: ubuntu-latest                      # Use the latest Ubuntu GitHub-hosted runner
-
-    # Run this job only if the event is either 'issues' or 'pull_request'
-    if: contains(fromJson('["issues","pull_request"]'), github.event_name)
-
+    runs-on: ubuntu:latest
+    if: contains(fromJson('["issues","pull_request"]'),github.event_name) #  Run this job only if the event is either 'issues' or 'pull_request'
     steps:
-      - name: Run only if issue has a label
-        # This step only runs if the issue has a label with the name 'bug'
-        if: contains(github.event.issue.labels.*.name, 'bug')
-
-        # Prints the names of all labels on the issue, joined by commas
-        run: echo ${{ join(github.event.issue.labels.*.name, ',') }}
-
+     - name: Run only if issue has a label
+       if: contains( github.event.issue.labels.*.name,'bug') # This step only runs if the issue has a label with the name 'bug'
+       run: echo ${{ join(github.event.issue.labels.*.name, ',') }} #Prints the names of all labels on the issue, joined by commas
   using-expressions-and-contexts:
-    runs-on: ubuntu-latest                      # Use GitHub's Ubuntu runner
-
-    # This job only runs if the event is a 'push'
-    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest  # Use GitHub's Ubuntu runner
+    if: ${{ github.event_name=='push' }}
 
     steps:
       - name: Expressions
-        id: expressions                         # Gives this step an ID for referencing its outputs later
+        id: expressions
         run: |
-          # Evaluate and print basic GitHub expressions using the ${{ }} syntax
-
-          echo "${{ 1 }}"                            # Prints the number 1
-          echo "${{ 'This is a string' }}"           # Prints a string literal
-          echo "${{ null }}"                         # Prints nothing (null value)
-          echo "${{ true }}"                         # Prints boolean value true
-          echo "${{ 1 > 2 }}"                        # Evaluates to false (1 is not greater than 2)
-          echo "${{ 'string' == 'String' }}"         # Evaluates to false (case-sensitive)
-          echo "${{ true && false }}"                # Evaluates to false (logical AND)
-          echo "${{ true || (false && true) }}"      # Evaluates to true (logical OR with grouping)
-
+          # All of these use GitHub expressions passed to shell via echo
+          echo "${{ 1 }}"                            # Prints: 1 (a number literal)
+          echo "${{ 'This is a string' }}"           # Prints: This is a string
+          echo "${{ null }}"                         # Prints: (blank/null)
+          echo "${{ true }}"                         # Prints: true
+          echo "${{ 1 > 2 }}"                        # Prints: false
+          echo "${{ 'string' == 'String' }}"         # Prints: false
+          echo "${{ true && false }}"                # Prints: false
+          echo "${{ true || (false && true) }}"      # Prints: true
       - name: Dump Contexts
         run: |
-          # Dump various GitHub Actions contexts as JSON strings for debugging or learning
-
-          echo '${{ toJson(github) }}'   # Information about the GitHub environment and triggering event
-          echo '${{ toJson(job) }}'      # Info about the current job, like job ID, status
-          echo '${{ toJson(secrets) }}'  # Lists available secrets (actual values are redacted)
-          echo '${{ toJson(steps) }}'    # Info about the steps in the current job, including their outputs
-          echo '${{ toJson(runner) }}'   # Info about the runner, like OS, architecture, temp directories, etc.
+          # Use toJson to output structured data
+          echo '${{ toJson(github) }}'   # GitHub context
+          echo '${{ toJson(job) }}'      # Job context
+          echo '${{ toJson(secrets) }}'  # Secrets (values redacted)
+          echo '${{ toJson(steps) }}'    # Step outputs
+          echo '${{ toJson(runner) }}'   # Runner environment info
