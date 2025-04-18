@@ -1,28 +1,34 @@
-name:  status check functions
-on: [push]
+name: status check functions  # Name of the workflow shown in GitHub Actions UI
+
+on: [push]  # Trigger the workflow on push events to any branch
 
 jobs:
-  job-1:
-    runs-on: ubuntu-latest
+  job-1:  # First job named 'job-1'
+    runs-on: ubuntu-latest  # Runs on the latest available Ubuntu runner
     steps:
       - name: step 1
-        run: sleep 20
+        run: sleep 20  # Simulates a long-running process (20 seconds delay)
+
       - name: Runs on failure
-        if: failure()
-        run: echo 'Runs only on failure'
+        if: failure()  # This step runs only if a previous step failed
+        run: echo 'Runs only on failure'  # Prints a message if failure occurred
+
       - name: runs on success
-        if: success()
-        run: echo 'runs on success'
+        if: success()  # This step runs only if all previous steps succeeded
+        run: echo 'runs on success'  # Message printed if successful
+
       - name: always run
-        if: success() || failure()
-       # if: always()
-        run: echo 'always runs'
+        if: success() || failure()  # Runs regardless of previous step result
+        # if: always()  # Alternatively, you can use this built-in always() function
+        run: echo 'always runs'  # Message always printed
+
       - name: runs when cancelled
-        if: cancelled()
-        run: echo ' runs on cancellation'
-  job2:
-    runs-on: ubuntu-latest
-    needs: job-1
-    if: failure()
+        if: cancelled()  # This step runs only if the job was canceled
+        run: echo ' runs on cancellation'  # Message printed if canceled
+
+  job2:  # Second job named 'job2'
+    runs-on: ubuntu-latest  # Uses Ubuntu runner
+    needs: job-1  # Waits for 'job-1' to complete before starting
+    if: failure()  # Runs only if job-1 failed
     steps:
-     - run:  echo 'job2'
+      - run: echo 'job2'  # Prints a message indicating job2 is running
