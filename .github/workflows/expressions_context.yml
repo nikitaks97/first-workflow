@@ -35,7 +35,6 @@ jobs:
     steps:
       - name: Expressions
         id: expressions                         # Gives this step an ID for referencing its outputs later
-
         run: |
           # Evaluate and print basic GitHub expressions using the ${{ }} syntax
 
