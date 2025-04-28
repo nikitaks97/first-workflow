@@ -8,6 +8,8 @@ jobs:
     steps:
       - name: step 1
         run: sleep 20  # Simulates a long-running process (20 seconds delay)
+      - name: fail
+        run: exit 1
 
       - name: Runs on failure
         if: failure()  # This step runs only if a previous step failed
