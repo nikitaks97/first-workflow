@@ -7,5 +7,5 @@ jobs:
    - name: log ENV VAR
      run: echo $GITHUB_REF
    - name: log context
-     run: echo '${{ GITHUB_REF }}'
+     run: echo '${{ github.ref }}'
    
