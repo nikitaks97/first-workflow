@@ -31,4 +31,4 @@ jobs:
     needs: job-1  # Waits for 'job-1' to complete before starting
     if: failure()  # Runs only if job-1 failed
     steps:
-      - run: echo 'job2'  # Prints a message indicating job2 is running
+      - run: echo 'job2'  # Prints a message indicating job2 is running .
