@@ -4,7 +4,8 @@ on: [push]  # Trigger the workflow on push events to any branch
 
 jobs:
   job-1:  # First job named 'job-1'
-    runs-on: ubuntu-latest  # Runs on the latest available Ubuntu runner
+    runs-on: ubuntu-latest 
+    continue-on-error: true # Runs on the latest available Ubuntu runner
     steps:
       - name: step 1
         run: sleep 90  # Simulates a long-running process (20 seconds delay)
