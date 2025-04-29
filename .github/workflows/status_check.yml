@@ -10,9 +10,9 @@ jobs:
         run: sleep 20  # Simulates a long-running process (20 seconds delay)
       - name: fail
         run: exit 1
-      - name: Runs on step-2 failure
-        if: failure() && steps.step-2.conclusion == 'failure'
-        run: echo " step-2 has failed"
+      - name: Runs on step-2 failure  # This step runs only if 'step-2' has failed
+        if: failure() && steps.step-2.conclusion == 'failure'  # Condition to run this step: the workflow is in a failure state AND 'step-2' specifically failed
+        run: echo " step-2 has failed"  # Logs a message indicating that 'step-2' has failed
 
       - name: Runs on failure
         if: failure()  # This step runs only if a previous step failed
