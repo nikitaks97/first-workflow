@@ -10,10 +10,13 @@ jobs:
         run: sleep 20  # Simulates a long-running process (20 seconds delay)
       - name: fail
         run: exit 1
+      - name: Runs on step-2 failure
+        if: failure() && steps.step-2.conclusion == 'failure'
+        run: echo " step-2 has failed"
 
       - name: Runs on failure
         if: failure()  # This step runs only if a previous step failed
-        run: echo 'Runs only on failure'  # Prints a message if failure occurred
+        run: echo 'failure'  # Prints a message if failure occurred
 
       - name: runs on success
         if: success()  # This step runs only if all previous steps succeeded
