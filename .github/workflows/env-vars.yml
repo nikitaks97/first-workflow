@@ -1,39 +1,65 @@
+# Workflow name
 name: Environment Variables
+
+# Trigger this workflow on any push event
 on: [push]
 
+# Define a workflow-level environment variable (available to all jobs)
 env:
   WF_LEVEL_ENV: Available to all jobs
 
 jobs:
   env-vars-and-context:
-    runs-on: ubuntu-latest
-    # if: $GITHUB_REF == 'refs/heads/main' DONT DO THIS
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
+    # Conditional execution: only run this job if the push is to the main branch
     if: github.ref == 'refs/heads/main'
+
+    # Define a job-level environment variable (available to all steps in this job)
     env:
       JOB_LEVEL_ENV: Available to all steps in env-vars-and-context job
+
     steps:
       - name: Log ENV VAR
+        # Use shell-style syntax to print an environment variable
         run: echo $GITHUB_REF
+
       - name: Log Context
+        # Use GitHub Actions expression syntax to print the value of a context variable
         run: echo '${{ github.ref }}'
+
       - name: Set Env Var
         run: |
+          # Set a new environment variable with the current date/time
           echo "NEW_ENV_VAR=$(date)" >> "$GITHUB_ENV"
+          # Override JOB_LEVEL_ENV with a new random value
           echo "JOB_LEVEL_ENV=$RANDOM" >> "$GITHUB_ENV"
+
       - name: Multiline ENV Var
         run: |
+          # Generate a unique delimiter using random bytes encoded in base64
           DELIMITER=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          # Start defining a multiline environment variable RANDOM_JOKE
           echo "RANDOM_JOKE<<$DELIMITER" >> "$GITHUB_ENV"
+          # First line of the multiline variable
           echo "Here is a joke: " >> "$GITHUB_ENV"
+          # Fetch a joke from an API and append it
           curl -s https://icanhazdadjoke.com/ >> "$GITHUB_ENV"
+          # Add a blank line (optional for formatting)
           echo "" >> "$GITHUB_ENV"
+          # Close the multiline variable
           echo "$DELIMITER" >> "$GITHUB_ENV"
+
       - name: Log Custom ENV Vars
+        # Define a step-level environment variable
         env:
           STEP_LEVEL_ENV: Available to only this step
-          WF_LEVEL_ENV: Overriden in step
+          WF_LEVEL_ENV: Overriden in step  # Override the workflow-level env var
+
         run: |
+          # Print environment variables using GitHub Actions expression syntax
           echo '${{ env.STEP_LEVEL_ENV }}'
+          # Print environment variables using shell-style syntax
           echo $STEP_LEVEL_ENV
           echo $WF_LEVEL_ENV
           echo $JOB_LEVEL_ENV
