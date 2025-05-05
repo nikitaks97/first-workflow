@@ -1,16 +1,15 @@
 name: Calling Reusable Workflows.
-on:
-  workflow_dispatch:
-    inputs:
-      name:
-        description: "Input description"
-        type: string
-        default: "nikita"
-        required: false
+on: [push]
+  #inputs:
+     # name:
+     #   description: "Input description"
+       # type: string
+       # default: "nikita"
+       # required: false
 jobs:
   calling-a-reusable-wf:
     uses: nikitaks97/first-workflow/.github/workflows/reusable-workflow.yml@main
     with:
-      name: ${{ inputs.name }}
+      name: nikita
     secrets:
       access-token: ${{ secrets.ACCESS_TOKEN }}
