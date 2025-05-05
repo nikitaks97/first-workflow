@@ -11,13 +11,24 @@ on:
       access-token:
         description: "Secret description"
         required: true
-
+    outputs:
+      date:
+       description: "output value"
+       value: ${{ jobs.generate-outputs.date }}
+ 
 jobs:
   checkout:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - run: ls -a
+  generate-output:
+   runs-on: ubuntu-latest
+   outputs:
+    date: ${{ steps.date-step.outputs.date }}
+   steps:
+    - run: echo "date=$(date)" >> GITHUB_OUTPUT
+      id: date-step
   log-context-and-inputs:
     runs-on: ubuntu-latest
     steps:
