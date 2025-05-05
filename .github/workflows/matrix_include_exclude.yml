@@ -1,44 +1,66 @@
+# Workflow name shown in GitHub Actions tab
 name: Matrix
-on: [push]
 
-#------- ORIGINAL --------#
-# X {os: ubuntu-latest, node-version: 14, is-ubuntu: true, experimental: false}
-# {os: ubuntu-latest, node-version: 15, is-ubuntu: true, experimental: false}
-# {os: ubuntu-latest, node-version: 16, is-ubuntu: true, experimental: true}
-# {os: windows-latest, node-version: 14, experimental: false}
-# {os: windows-latest, node-version: 15, experimental: false}
-# {os: windows-latest, node-version: 16, experimental: false}
-# {os: macos-latest, node-version: 15}
-# {os: ubuntu-latest, node-version: 17 }
+# Trigger the workflow on every push to any branch
+on: [push]
 
 jobs:
   node-matrix:
+    # Don't ignore errors in any job (each failure will fail the workflow)
     continue-on-error: false
+
     strategy:
+      # Define the matrix of combinations to run
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        node-version: [14, 15, 16]
+        os: [ubuntu-latest, windows-latest]       # Operating systems to test on
+        node-version: [14, 15, 16]                # Node.js versions to test
         include:
+          # Add an additional field `is-ubuntu` to ubuntu-latest jobs
           - os: ubuntu-latest
             is-ubuntu: true
+
+          # Add a new combination: macOS + Node.js 15
           - os: macos-latest
             node-version: 15
+
+          # ❌ This creates a broken job: it has no `os` or `node-version`
+          # This job will fail unless you check for missing fields or remove it.
           - experimental: false
+
+          # Add an "experimental" flag to ubuntu-16 combo
           - os: ubuntu-latest
             node-version: 16
             experimental: true
+
+          # Add ubuntu-latest with Node.js 17 (not in original list)
           - os: ubuntu-latest
             node-version: 17
+
         exclude:
+          # Exclude ubuntu-latest + Node.js 14 from the final matrix
           - os: ubuntu-latest
             node-version: 14
+
+      # Allow all matrix jobs to run even if one fails
       fail-fast: false
+
+      # Optional: limit how many matrix jobs run in parallel
       # max-parallel: 3
+
+    # Use the runner specified in the matrix
     runs-on: ${{ matrix.os }}
+
     steps:
+      # Show the Node.js version pre-setup (default on the runner)
       - run: node -v
+
+      # Print the entire matrix object for debugging
       - run: echo '${{ toJson(matrix) }}'
+
+      # Setup the specified Node.js version from the matrix
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+
+      # Verify the installed Node.js version
       - run: node -v
