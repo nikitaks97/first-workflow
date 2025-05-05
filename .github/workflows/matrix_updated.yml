@@ -53,7 +53,7 @@ jobs:
             node-version: 14
 
       # Stop running other jobs if one fails (unless it's experimental and allowed to fail)
-      fail-fast: true
+      fail-fast: false
 
       # Optional: Limit concurrency (uncomment to use)
       # max-parallel: 3
