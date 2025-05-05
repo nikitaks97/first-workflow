@@ -17,5 +17,5 @@ jobs:
    runs-on: ubuntu-latest
    needs: calling-a-reusable-wf
    steps:
-     - run: echo "${{ needs.calling-a-reusable-wf.outputs.date }}"
+     - run: echo  ${{ needs.calling-a-reusable-wf.outputs.date }}
     
