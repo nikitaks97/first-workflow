@@ -1,7 +1,10 @@
+# Name of the GitHub Actions workflow
 name: Matrix updated
+
+# Run this workflow on every push to any branch
 on: [push]
 
-#------- ORIGINAL --------#
+# ORIGINAL combinations (comments are useful for understanding intent/history)
 # X {os: ubuntu-latest, node-version: 14, is-ubuntu: true, experimental: false}
 # {os: ubuntu-latest, node-version: 15, is-ubuntu: true, experimental: false}
 # {os: ubuntu-latest, node-version: 16, is-ubuntu: true, experimental: true}
@@ -13,32 +16,62 @@ on: [push]
 
 jobs:
   node-matrix:
+    # If a job is marked as experimental, let it fail without failing the entire workflow
     continue-on-error: ${{ matrix.experimental == true }}
+
     strategy:
       matrix:
+        # Define the main combinations of OS and Node.js versions
         os: [ubuntu-latest, windows-latest]
         node-version: [14, 15, 16]
+
+        # Additional combinations or overrides
         include:
+          # Add metadata for ubuntu jobs
           - os: ubuntu-latest
             is-ubuntu: true
+
+          # Add a custom combination: macOS with Node.js 15
           - os: macos-latest
             node-version: 15
+
+          # ❌ Invalid: no os/node-version — will create a broken job and should be removed or corrected
           - experimental: false
+
+          # Mark ubuntu-16 job as experimental
           - os: ubuntu-latest
             node-version: 16
             experimental: true
+
+          # Add a new combination: ubuntu with Node.js 17
           - os: ubuntu-latest
             node-version: 17
+
+        # Remove this specific job from the matrix
         exclude:
           - os: ubuntu-latest
             node-version: 14
-      fail-fast: false
+
+      # Stop running other jobs if one fails (unless it's experimental and allowed to fail)
+      fail-fast: true
+
+      # Optional: Limit concurrency (uncomment to use)
       # max-parallel: 3
+
+    # Run the job on the OS defined by the matrix
     runs-on: ${{ matrix.os }}
+
     steps:
+      # Show the default Node.js version pre-setup
       - run: node -v
+
+      # Print the matrix values used in this job for debugging
       - run: echo '${{ toJson(matrix) }}'
+
+      # Install the Node.js version defined by the matrix
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+
+      # Verify that the correct Node.js version is installed
       - run: node -v
