@@ -1,0 +1,12 @@
+name: Main Workflow that calls reusable-wrapper workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-wrapper:
+    uses: ./.github/workflows/reusable-wrapper.yml
+    with:
+      name: "Ali"
+    secrets:
+      access-token: ${{ secrets.ACCESS_TOKEN }}
