@@ -1,15 +1,35 @@
+# Workflow name shown in the GitHub Actions UI
 name: matrix strategy
+
+# Trigger this workflow on every push to any branch
 on: [push]
+
 jobs:
- node-matrix:
-  runs-on: ${{ matrix.os }}
-  strategy:
-    matrix:
-     os: [ ubuntu-latest, windows-latest]
-     node-version: [14,15,16]
-  steps:
-   - run: node -v
-   - uses: actions/setup-node@v4
-     with:
-      node-version: ${{ matrix.node-version }}
+  node-matrix:
+    # Do not ignore errors in individual matrix jobs
+    continue-on-error: false
+
+    # Use a runner OS based on the matrix value
+    runs-on: ${{ matrix.os }}
+
+    # Define the matrix strategy for different OS and Node.js versions
+    strategy:
+      # If one matrix job fails, don't stop the others
+      fail-fast: false
+      
+      # Define the matrix of values to test against
+      matrix:
+        os: [ubuntu-latest, windows-latest]       # Run jobs on both Ubuntu and Windows
+        node-version: [14, 15, 16]                # Test Node.js versions 14, 15, and 16
+
+    steps:
+      # Step to check the default Node.js version on the runner before setup
+      - run: node -v
+
+      # Use the setup-node action to install the specified Node.js version
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}  # Use the current matrix Node.js version
+
+
    
