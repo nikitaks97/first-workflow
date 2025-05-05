@@ -5,7 +5,7 @@ on:
       name:
         description: "Input description"
         type: string
-        default: "Ali"
+        default: "nikita"
         required: false
     secrets:
       access-token:
