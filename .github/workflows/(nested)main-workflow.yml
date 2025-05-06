@@ -5,7 +5,7 @@ on:
 
 jobs:
   call-wrapper:
-    uses: ./.github/workflows/reusable-wrapper.yml
+    uses: ./.github/workflows/(nested)reusable-wrapper.yml
     with:
       name: "Ali"
     secrets:
