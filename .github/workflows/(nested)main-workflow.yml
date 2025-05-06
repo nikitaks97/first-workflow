@@ -1,4 +1,4 @@
-name: Main Workflow that calls reusable-wrapper workflow
+name: Main Workflow that calls reusable-wrapper wf
 
 on:
   workflow_dispatch:
