@@ -1,4 +1,18 @@
 name: Reusablewrapper workflow that calls base-wrapper workflow
 on:
  workflow_call:
+  inputs:
+   name:
+    required: true
+    type: string
+  secrets:
+   access-token: 
+     required: true
+jobs:
+ call-base: ./.github/workflows/base-reusable.yml
+  with:
+   name: ${{ inputs.name }}
+  secrets:
+   access-token: ${{ secrets.access-token }} 
+   
   
