@@ -1,0 +1,17 @@
+name: Base Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+    secrets:
+      access-token:
+        required: true
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello, ${{ inputs.name }}!"
