@@ -12,7 +12,7 @@ on:
 
 jobs:
   call-base:
-    uses: ./.github/workflows/(nested)base-reusable.yml
+    uses: ./.github/workflows/nested-base-reusable.yml
     with:
       name: ${{ inputs.name }}
     secrets:
