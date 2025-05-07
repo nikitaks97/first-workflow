@@ -15,7 +15,7 @@ jobs:
         run: echo '${{ toJSON(steps.cache-dependencies.outputs) }}'
       - name: Install dependencies
         run: |
-               cd _MACOSX/Project
+               cd Project
                npm install       
         
         
