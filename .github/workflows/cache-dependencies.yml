@@ -15,8 +15,8 @@ jobs:
         run: echo '${{ toJSON(steps.cache-dependencies.outputs) }}'
       - name: Install dependencies
         run: |
-           cd '__MACOSX/02 Starting Project'
-           npm install        
+               cd '02 Starting Project'
+               npm install       
         
         
     #  - name: Use Axios
