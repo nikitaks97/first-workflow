@@ -1,0 +1,58 @@
+name: Random Joke                   # Name of the custom GitHub Action
+author: Ali Alaa                   # Author of the action
+description: "Generate a random joke and send it to slack"  # Brief description of what the action does
+
+inputs:                             # Define input parameters the action expects
+  slack_username:
+    description: "Slack Username"   # Optional: Username to tag in the Slack message
+  upload_joke:
+    description: "Upload Joke as an Artifact?"  # Optional: whether to save and upload the joke file
+  slack_webhook:
+    description: "Slack Webhook"   # Webhook URL to post the joke to Slack
+
+outputs:                            # Define output values that can be used later
+  joke:
+    description: The generated joke
+    value: ${{ steps.joke.outputs.random_joke }}  # Gets the joke from the step output below
+
+runs:
+  using: composite                  # Composite action made of multiple steps
+  steps:
+
+    - name: Generate Joke
+      shell: bash
+      id: joke                      # Gives this step an ID for referencing its output
+      run: |
+        # Generate a unique end-of-file marker using base64 random data
+        EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+
+        # Begin a multiline output block for 'random_joke'
+        echo "random_joke<<$EOF" >> "$GITHUB_OUTPUT"
+
+        # Fetch a random joke from the icanhazdadjoke API and write it to output
+        curl -s https://icanhazdadjoke.com/ >> "$GITHUB_OUTPUT"
+
+        # Add a blank line and the EOF marker to close the multiline block
+        echo "" >> "$GITHUB_OUTPUT"
+        echo "$EOF" >> "$GITHUB_OUTPUT"
+
+    - name: Generate Joke File
+      shell: bash
+      run: echo '${{ steps.joke.outputs.random_joke }}' > joke.txt  # Save the joke to a text file
+      if: inputs.upload_joke                                        # Run this step only if upload_joke input is provided
+
+    - name: Upload the Joke
+      if: inputs.upload_joke                                        # Conditional step
+      uses: actions/upload-artifact@v3                              # Uploads files as workflow artifacts
+      with:
+        name: joke                                                  # Artifact name
+        path: joke.txt                                              # Path to the file to upload
+
+    - name: Send a slack message
+      uses: docker://technosophos/slack-notify                      # Use a Docker container to send the Slack message
+      env:
+        SLACK_WEBHOOK: ${{ inputs.slack_webhook }}                 # Webhook URL for the Slack message
+        SLACK_TITLE: Random Joke                                   # Title of the Slack message
+        SLACK_MESSAGE: "${{ inputs.slack_username && format('{0}{1} {2}', '@', inputs.slack_username, steps.joke.outputs.random_joke) || steps.joke.outputs.random_joke }}"
+        # Format the Slack message: If a Slack username is provided, prepend @username to the joke; otherwise, just send the joke
+        SLACK_COLOR: "#723fc4"                                     # Color used for the Slack message accent
