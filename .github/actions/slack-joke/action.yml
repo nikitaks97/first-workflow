@@ -46,7 +46,7 @@ runs:
       uses: actions/upload-artifact@v3                              # Uploads files as workflow artifacts
       with:
         name: joke                                                  # Artifact name
-        path: joke.txt                                              # Path to the file to upload
+        path: ./.github/actions/slack-joke                                          # Path to the file to upload
 
     - name: Send a slack message
       uses: docker://technosophos/slack-notify                      # Use a Docker container to send the Slack message
