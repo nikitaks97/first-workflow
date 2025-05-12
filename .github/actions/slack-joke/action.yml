@@ -43,10 +43,10 @@ runs:
 
     - name: Upload the Joke
       if: inputs.upload_joke== true                                       # Conditional step
-      uses: actions/upload-artifact@v3                              # Uploads files as workflow artifacts
+      uses: actions/upload-artifact@e3b47a6e4d9673a0c2a403fc0fc7862b32763d18                         # Uploads files as workflow artifacts
       with:
         name: joke                                                  # Artifact name
-        path: .                                      # Path to the file to upload
+        path: joke.txt                                     # Path to the file to upload
 
     - name: Send a slack message
       uses: docker://technosophos/slack-notify                      # Use a Docker container to send the Slack message
