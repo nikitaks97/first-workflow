@@ -1,19 +1,33 @@
+# Name of the GitHub Action as it appears in the Marketplace or workflows
 name: Hello World
+
+# Author information
 author: Ali Alaa
+
+# Short description of what this Action does
 description: "Greet someone and record the time"
+
+# Define the input parameters this Action accepts
 inputs:
   who_to_greet:
-    description: "Who to greet"
-    required: true
-    default: "World"
+    description: "Who to greet"        # A friendly name for the person being greeted
+    required: true                     # This input is mandatory
+    default: "World"                   # Default value if not specified in the workflow
+
+# Define the outputs this Action returns
 outputs:
   time:
-    description: The time of the greeting
+    description: The time of the greeting   # Outputs the timestamp when the greeting happened
+
+# Define how the Action runs
 runs:
-  using: "node16"
-  main: index.js
+  using: "node16"            # Uses Node.js 16 runtime
+  main: index.js             # Main script that performs the greeting logic
+
+  # Optional script to run before main (setup)
   pre: "setup.js"
-  pre-if: runner.os == 'linux'
-  post: "cleanup.js"
-  post-if: runner.os == 'linux'
+  pre-if: runner.os == 'linux'   # Only runs setup.js on Linux runners
+
+  # Optional script to run after main (cleanup)
+  post: "cleanup.js
 
