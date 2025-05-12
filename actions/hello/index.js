@@ -1,5 +1,7 @@
-// Import the GitHub Actions core module
-// This gives access to functions like getInput(), setOutput(), exportVariable(), etc.
+// Import the GitHub Actions core module               #note: In order to use the packages installed here it is combined in a single file using 
+                                                           #npm install -g @vercel/ncc , ncc build index.js.This will create a dist/index.js file that you can publish or use directly in your GitHub Action.
+#It generates a self-contained index.js (with all dependencies included) in the dist/ folder. You should then update your action.yml to use:
+                                                             // This gives access to functions like getInput(), setOutput(), exportVariable(), etc.
 const core = require("@actions/core");
 
 // Import the GitHub context module
