@@ -1,5 +1,6 @@
 // Import the GitHub Actions core module               //note: In order to use the packages installed here it is combined in a single file using 
                                                            //npm install -g @vercel/ncc , ncc build index.js.This will create a dist/index.js file that you can publish or use directly in your GitHub Action.
+//ncc is a tool by Vercel that compiles Node.js projects into a single file, ideal for GitHub Actions. GitHub requires JavaScript actions to be bundled into one file if you're publishing them to the Marketplace or want portability.
 //It generates a self-contained index.js (with all dependencies included) in the dist/ folder. You should then update your action.yml to use:
                                                              // This gives access to functions like getInput(), setOutput(), exportVariable(), etc.
 const core = require("@actions/core");
