@@ -42,7 +42,7 @@ runs:
       if: inputs.upload_joke                                        # Run this step only if upload_joke input is provided
 
     - name: Upload the Joke
-      if: inputs.upload_joke                                        # Conditional step
+      if: inputs.upload_joke== true                                       # Conditional step
       uses: actions/upload-artifact@v3                              # Uploads files as workflow artifacts
       with:
         name: joke                                                  # Artifact name
