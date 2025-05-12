@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Simple JS Action
+      - name: Simple JS Action 
         id: greet
         uses: ./.github/actions/hello
         # uses: actions/hello-world-javascript-action@e76147da8e5c81eaf017dede5645551d4b94427b
