@@ -43,7 +43,7 @@ runs:
 
     - name: Upload the Joke
       if: inputs.upload_joke== true                                       # Conditional step
-      uses: actions/upload-artifact@v3.1.3                        # Uploads files as workflow artifacts
+      uses: actions/upload-artifact@v4                    # Uploads files as workflow artifacts
       with:
         name: joke                                                  # Artifact name
         path: joke.txt                                     # Path to the file to upload
