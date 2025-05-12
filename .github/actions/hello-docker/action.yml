@@ -1,22 +1,45 @@
+# The name of the GitHub Action as it will appear in the GitHub Actions UI
 name: Hello World
-author: Ali Alaa
+
+# The author of the action
+author: Nikita
+
+# A short description of what the action does
 description: "Greet someone and record the time"
+
+# Define the input parameters this action can receive
 inputs:
   who_to_greet:
     description: "Who to greet"
-    # required: true
-    default: "World"
+    # Optional input, since `required: true` is commented out
+    # This means it's not mandatory to pass a value
+    default: "World"  # Default greeting name if none is provided
+
+# Define output values this action produces (can be used in later steps)
 outputs:
   time:
     description: The time of the greeting
+
+# Define how the action is run
 runs:
-  using: "docker"
+  using: "docker"  # Specifies that this action runs inside a Docker container
+
+  # Option 1 (commented out): use a Docker image from Docker Hub
   # image: 'docker://node:18.16-alpine3.17'
+
+  # Option 2 (active): build from a Dockerfile in the same directory
   image: "Dockerfile"
-  # entrypoint:
+
+  # args passed to ENTRYPOINT/CMD — in this case, the name to greet
   args:
     - ${{ inputs.who_to_greet }}
+
+  # Set environment variables for the container
   env:
-    HELLO: WORLD
+    HELLO: WORLD  # You can use this in your entrypoint scripts
+
+  # Post-execution script that runs after the main container (clean-up logic)
   post-entrypoint: "/cleanup.sh"
+
+  # Run the post-entrypoint only if the GitHub Actions runner is Linux-based
   post-if: runner.os == 'linux'
