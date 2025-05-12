@@ -22,7 +22,7 @@ outputs:
 # Define how the Action runs
 runs:
   using: "node16"            # Uses Node.js 16 runtime
-  main: index.js             # Main script that performs the greeting logic
+  main: dist/index.js             # Main script that performs the greeting logic
 
   # Optional script to run before main (setup)
   pre: "setup.js"
